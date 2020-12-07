@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { List, Divider } from 'antd';
 import axios from 'axios';
 
+import CharacterCard from '../components/CharacterCard.js';
+
 const query = 'aaa';
 
 function Search() {
@@ -16,14 +18,19 @@ function Search() {
 
   return(
     <div>
-
      <Divider orientation="left">Search Results for {query}</Divider>
      <List
-      bordered
+      grid={{ gutter: 16, column: 5 }}
+      pagination={{
+        onChange: page => {
+          console.log(page);
+        },
+        pageSize: 5,
+      }}
       dataSource={result}
       renderItem={ (item) => (
-        <List.Item>
-          {item.name}
+        <List.Item key={item.id}>
+          <CharacterCard {...item}/>
         </List.Item>
       )}
       />
