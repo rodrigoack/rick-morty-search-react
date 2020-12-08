@@ -58,22 +58,28 @@ function Results() {
         enterButton
         onSearch={onSearch}
       />
-     <Divider orientation="left">Search Results for {query}</Divider>
-     <List
-      grid={{ gutter: 16, column: 5 }}
-      loading={loading}
-      pagination={{
-        onChange: page => {
-          console.log(page);
-        },
-        pageSize: 5,
-      }}
-      dataSource={results}
-      renderItem={ (item) => (
-        <List.Item key={item.id}>
-          <CharacterCard {...item} onClick={() => showDetails(item)}/>
-        </List.Item>
-      )}
+      <Divider orientation="left">
+        {
+          query
+            ? `Search Results for ${query}`
+            : 'All Rick & Morty Characters'
+        }
+      </Divider>
+      <List
+        grid={{ gutter: 16, column: 5 }}
+        loading={loading}
+        pagination={{
+          onChange: page => {
+            console.log(page);
+          },
+          pageSize: 5,
+        }}
+        dataSource={results}
+        renderItem={ (item) => (
+          <List.Item key={item.id}>
+            <CharacterCard {...item} onClick={() => showDetails(item)}/>
+          </List.Item>
+        )}
       />
     </div>
   );

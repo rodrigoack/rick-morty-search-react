@@ -1,7 +1,12 @@
-import React from 'react';
-import { Divider, Image, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Divider, Image, Button, List } from 'antd';
+import axios from 'axios';
+
 
 function CharacterDetails(props) {
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const {
     name,
     status,
@@ -13,6 +18,17 @@ function CharacterDetails(props) {
     image,
     episode
   } = props;
+
+  useEffect(() => {
+    setLoading(true);
+
+    Promise.all(episode.map((url) => axios.get(url)))
+      .then((responses) => {
+        setResults(responses.map((response) => ({...response.data})));
+      })
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
+  }, [episode]);
 
   const handleClick = (name) => {
     alert(`Ayo! Buy merchandise from ${name}!`);
@@ -28,11 +44,22 @@ function CharacterDetails(props) {
       <b>Gender:</b> {gender} <br/>
       <b>Origin:</b> {origin.name} <br/>
       <b>Location:</b> {location.name} <br/>
-      <b>Episode:</b> {episode.length} <br/>
       <Divider/>
-      <Button type="primary" onClick={() => handleClick(name)}>
+      <Button type="primary" block onClick={() => handleClick(name)}>
         Buy Merchandise!
       </Button>
+      <Divider orientation="left">
+        List of Episodes ({episode.length})
+      </Divider>
+      <List
+        loading={loading}
+        dataSource={results}
+        renderItem={ (item) => (
+          <List.Item key={item.id}>
+            {item.episode} - {item.name} ({item.air_date})
+          </List.Item>
+        )}
+      />
     </div>
   );
 };
