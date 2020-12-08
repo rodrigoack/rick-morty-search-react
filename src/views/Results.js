@@ -28,7 +28,8 @@ function Results() {
   const onSearch = (value) => {
     setQuery(value);
     setLoading(true);
-    axios.get(`${CHARACTER_API}?name=${value}`)
+    // API returns alphabetical instead of ID order when ?name='' is provided
+    axios.get(!!value ? `${CHARACTER_API}?name=${value}` : CHARACTER_API)
       .then((result) => setResults(result.data.results))
       .catch((error) => alert(error))
       .finally(() => setLoading(false));
