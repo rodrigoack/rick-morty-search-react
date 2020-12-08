@@ -7,8 +7,11 @@ import CharacterDetails from '../components/CharacterDetails.js';
 
 const { Search } = Input;
 
+const CHARACTER_API = 'https://rickandmortyapi.com/api/character'
+
 function Results() {
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [character, setCharacter] = useState({});
@@ -24,13 +27,19 @@ function Results() {
 
   const onSearch = (value) => {
     setQuery(value);
-    axios.get(`https://rickandmortyapi.com/api/character?name=${value}`)
-      .then((result) => setResults(result.data.results));
+    setLoading(true);
+    axios.get(`${CHARACTER_API}?name=${value}`)
+      .then((result) => setResults(result.data.results))
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    axios.get('https://rickandmortyapi.com/api/character')
-      .then((result) => setResults(result.data.results));
+    setLoading(true);
+    axios.get(CHARACTER_API)
+      .then((result) => setResults(result.data.results))
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
   }, []);
 
   return(
@@ -52,6 +61,7 @@ function Results() {
      <Divider orientation="left">Search Results for {query}</Divider>
      <List
       grid={{ gutter: 16, column: 5 }}
+      loading={loading}
       pagination={{
         onChange: page => {
           console.log(page);
