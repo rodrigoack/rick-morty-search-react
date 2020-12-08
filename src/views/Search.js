@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List, Divider, Drawer, Button } from 'antd';
+import { List, Divider, Drawer } from 'antd';
 import axios from 'axios';
 
 import CharacterCard from '../components/CharacterCard.js';
@@ -35,6 +35,7 @@ function Search() {
         placement="right"
         visible={drawerVisible}
         onClose={closeDrawer}
+        title={character.name}
       >
         <CharacterDetails {...character}/>
       </Drawer>

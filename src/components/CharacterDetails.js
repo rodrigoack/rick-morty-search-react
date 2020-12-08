@@ -1,4 +1,5 @@
 import React from 'react';
+import { Divider, Image, Button } from 'antd';
 
 function CharacterDetails(props) {
   const {
@@ -13,17 +14,25 @@ function CharacterDetails(props) {
     episode
   } = props;
 
+  const handleClick = (name) => {
+    alert(`Ayo! ${name}`);
+  };
+
   return(
     <div>
-      name: {name} <br/>
-      status: {status}
-      species: {species} <br/>
-      type: {type} <br/>
-      gender: {gender} <br/>
-      origin: {origin.name} <br/>
-      location: {location.name} <br/>
-      image: {image} <br/>
-      episode: {episode.length} <br/>
+      <Image src={image} width={450}/>
+      <Divider/>
+      <b>Status:</b> {status} <br/>
+      <b>Species:</b> {species} <br/>
+      <b>Type:</b> {type || "Unknown"} <br/>
+      <b>Gender:</b> {gender} <br/>
+      <b>Origin:</b> {origin.name} <br/>
+      <b>Location:</b> {location.name} <br/>
+      <b>Episode:</b> {episode.length} <br/>
+      <Divider/>
+      <Button type="primary" onClick={() => handleClick(name)}>
+        Buy Merchandise!
+      </Button>
     </div>
   );
 };
