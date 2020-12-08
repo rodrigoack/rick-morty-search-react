@@ -15,7 +15,7 @@ function CharacterDetails(props) {
   } = props;
 
   const handleClick = (name) => {
-    alert(`Ayo! ${name}`);
+    alert(`Ayo! Buy merchandise from ${name}!`);
   };
 
   return(

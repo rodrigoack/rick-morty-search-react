@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { List, Divider, Drawer } from 'antd';
+import { List, Divider, Drawer, Input } from 'antd';
 import axios from 'axios';
 
 import CharacterCard from '../components/CharacterCard.js';
 import CharacterDetails from '../components/CharacterDetails.js';
 
-const query = 'aaa';
+const { Search } = Input;
 
-function Search() {
+function Results() {
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [character, setCharacter] = useState({});
 
@@ -21,11 +22,15 @@ function Search() {
     setDrawerVisible(false);
   };
 
+  const onSearch = (value) => {
+    setQuery(value);
+    axios.get(`https://rickandmortyapi.com/api/character?name=${value}`)
+      .then((result) => setResults(result.data.results));
+  };
+
   useEffect(() => {
     axios.get('https://rickandmortyapi.com/api/character')
-      .then((result) => {
-        setResults(result.data.results);
-      });
+      .then((result) => setResults(result.data.results));
   }, []);
 
   return(
@@ -39,6 +44,11 @@ function Search() {
       >
         <CharacterDetails {...character}/>
       </Drawer>
+      <Search
+        allowClear
+        enterButton
+        onSearch={onSearch}
+      />
      <Divider orientation="left">Search Results for {query}</Divider>
      <List
       grid={{ gutter: 16, column: 5 }}
@@ -59,4 +69,4 @@ function Search() {
   );
 };
 
-export default Search;
+export default Results;

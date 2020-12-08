@@ -10,7 +10,7 @@ import { Layout, Col } from 'antd';
 
 // Views
 import Home from './views/Home.js';
-import Search from './views/Search.js';
+import Results from './views/Results.js';
 
 // Style
 import './App.css';
@@ -26,7 +26,7 @@ function App() {
             <div className="site-layout-content">
             <Switch>
               <Route path="/search">
-                <Search/>
+                <Results/>
               </Route>
               <Route path="/">
                 <Home/>
