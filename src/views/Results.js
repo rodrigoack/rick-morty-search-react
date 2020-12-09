@@ -34,10 +34,13 @@ function Results() {
     setQuery(value);
     setCurrentPage(1);
     setApiPage(1);
+    setResults([]);
   };
 
   const handlePagination = (page) => {
-    setApiPage(Math.ceil(page/4));
+    if (page > currentPage) {
+      setApiPage(Math.ceil(page/4));
+    }
     setCurrentPage(page);
   };
 
@@ -48,7 +51,7 @@ function Results() {
         page: apiPage
       }})
       .then((response) => {
-        setResults(response.data.results);
+        setResults((results) => [...results, ...response.data.results]);
         setInfo(response.data.info);
       })
       .catch((error) => alert(error))
