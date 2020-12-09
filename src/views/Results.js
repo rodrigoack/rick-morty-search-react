@@ -8,13 +8,18 @@ import CharacterDetails from '../components/CharacterDetails.js';
 const { Search } = Input;
 
 const CHARACTER_API = 'https://rickandmortyapi.com/api/character'
+const PAGE_SIZE = 5;
 
 function Results() {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
+  const [info, setInfo] = useState({});
   const [results, setResults] = useState([]);
   const [character, setCharacter] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [apiPage, setApiPage] = useState(1);
+
 
   const showDetails = (character) => {
     setCharacter(character)
@@ -27,21 +32,28 @@ function Results() {
 
   const onSearch = (value) => {
     setQuery(value);
-    setLoading(true);
-    // API returns alphabetical instead of ID order when ?name='' is provided
-    axios.get(!!value ? `${CHARACTER_API}?name=${value}` : CHARACTER_API)
-      .then((result) => setResults(result.data.results))
-      .catch((error) => alert(error))
-      .finally(() => setLoading(false));
+    setCurrentPage(1);
+    setApiPage(1);
+  };
+
+  const handlePagination = (page) => {
+    setApiPage(Math.ceil(page/4));
+    setCurrentPage(page);
   };
 
   useEffect(() => {
-    setLoading(true);
-    axios.get(CHARACTER_API)
-      .then((result) => setResults(result.data.results))
+    axios.get(CHARACTER_API, {
+      params: {
+        name: query,
+        page: apiPage
+      }})
+      .then((response) => {
+        setResults(response.data.results);
+        setInfo(response.data.info);
+      })
       .catch((error) => alert(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [query, apiPage]);
 
   return(
     <div>
@@ -57,6 +69,7 @@ function Results() {
       <Search
         allowClear
         enterButton
+        placeholder="Search by character name..."
         onSearch={onSearch}
       />
       <Divider orientation="left">
@@ -70,10 +83,11 @@ function Results() {
         grid={{ gutter: 16, column: 5 }}
         loading={loading}
         pagination={{
-          onChange: page => {
-            console.log(page);
-          },
-          pageSize: 5,
+          onChange: (page) => handlePagination(page),
+          total: info.count,
+          pageSize: PAGE_SIZE,
+          showSizeChanger: false,
+          current: currentPage
         }}
         dataSource={results}
         renderItem={ (item) => (
