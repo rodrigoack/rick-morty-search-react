@@ -1,23 +1,22 @@
-import React from 'react';
-
-// Libs
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect,
 } from 'react-router-dom';
 import { Layout, Col } from 'antd';
 
-// Views
 import Home from './views/Home.js';
 import Results from './views/Results.js';
 
-// Style
 import './App.css';
 
 const { Content } = Layout;
 
 function App() {
+  const [query, setQuery] = useState('');
+
   return (
     <Router>
       <Layout className="layout">
@@ -26,10 +25,10 @@ function App() {
             <div className="site-layout-content">
             <Switch>
               <Route path="/search">
-                <Results/>
+                <Results handleSearch={setQuery} query={query}/>
               </Route>
               <Route path="/">
-                <Home/>
+                { query ? <Redirect to="/search" /> : <Home handleSearch={setQuery} query={query}/> }
               </Route>
             </Switch>
             </div>

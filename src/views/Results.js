@@ -10,10 +10,11 @@ const { Search } = Input;
 
 const PAGE_SIZE = 5;
 
-function Results() {
+function Results(props) {
+  const { query, handleSearch } = props;
+
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [character, setCharacter] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +29,7 @@ function Results() {
   };
 
   const onSearch = (value) => {
-    setQuery(value);
+    handleSearch(value);
     setCurrentPage(1);
   };
 
@@ -76,6 +77,7 @@ function Results() {
         enterButton
         placeholder="Search by character name..."
         onSearch={onSearch}
+        defaultValue={query}
       />
       <Divider orientation="left">
         {

@@ -9,11 +9,9 @@ const logoStyle = {
   margin: 100
 };
 
-const onSearch = (value) => {
-  console.log(value);
-};
+function Home(props) {
+  const { handleSearch } = props;
 
-function Home() {
   return (
     <div>
       <Row justify="center">
@@ -27,7 +25,7 @@ function Home() {
             allowClear
             enterButton
             size="large"
-            onSearch={onSearch}
+            onSearch={handleSearch}
           />
         </Col>
       </Row>

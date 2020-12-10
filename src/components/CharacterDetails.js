@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Divider, Image, Button, List } from 'antd';
 import API from '../api';
 
+
 function CharacterDetails(props) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ function CharacterDetails(props) {
       .then((responses) => {
         setResults(responses.map((response) => ({...response.data})));
       })
-      .catch((error) => alert(error))
+      .catch((e) => console.error(e))
       .finally(() => setLoading(false));
   }, [episode]);
 
@@ -39,7 +40,7 @@ function CharacterDetails(props) {
       <Divider/>
       <b>Status:</b> {status} <br/>
       <b>Species:</b> {species} <br/>
-      <b>Type:</b> {type || "unknown"} <br/>
+      <b>Type:</b> {type || "Unknown"} <br/>
       <b>Gender:</b> {gender} <br/>
       <b>Origin:</b> {origin.name} <br/>
       <b>Location:</b> {location.name} <br/>
