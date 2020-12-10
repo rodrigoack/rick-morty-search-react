@@ -9,6 +9,7 @@ const style = {
 function CharacterCard(props) {
   const {name, image, episode, location} = props;
   const handleClick = props.onClick;
+
   return(
     <Card
       hoverable

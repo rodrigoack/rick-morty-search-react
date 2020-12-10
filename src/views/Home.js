@@ -6,7 +6,8 @@ const { Search } = Input;
 const logoStyle = {
   textAlign: 'center',
   fontSize: 64,
-  margin: 100
+  marginTop: 150,
+  marginBottom: 100,
 };
 
 function Home(props) {
@@ -16,7 +17,7 @@ function Home(props) {
     <div>
       <Row justify="center">
         <Col>
-          <h1 style={logoStyle}> RICK AND MORTY SEARCH BABY OH YEA </h1>
+          <h1 style={logoStyle}>RICK AND MORTY SEARCH BABYYY!</h1>
         </Col>
       </Row>
       <Row>

@@ -3,8 +3,8 @@ import { List, Divider, Drawer, Input } from 'antd';
 
 import API from '../api';
 
-import CharacterCard from '../components/CharacterCard.js';
-import CharacterDetails from '../components/CharacterDetails.js';
+import CharacterCard from '../components/CharacterCard';
+import CharacterDetails from '../components/CharacterDetails';
 
 const { Search } = Input;
 

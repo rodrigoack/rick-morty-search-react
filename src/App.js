@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom';
 import { Layout, Col } from 'antd';
 
-import Home from './views/Home.js';
-import Results from './views/Results.js';
+import Home from './views/Home';
+import Results from './views/Results';
 
 import './App.css';
 
@@ -23,14 +23,18 @@ function App() {
         <Content style={{ padding: '0 50px' }}>
           <Col span={24}>
             <div className="site-layout-content">
-            <Switch>
-              <Route path="/search">
-                <Results handleSearch={setQuery} query={query}/>
-              </Route>
-              <Route path="/">
-                { query ? <Redirect to="/search" /> : <Home handleSearch={setQuery} query={query}/> }
-              </Route>
-            </Switch>
+              <Switch>
+                <Route path="/search">
+                  <Results handleSearch={setQuery} query={query}/>
+                </Route>
+                <Route path="/">
+                  {
+                    query
+                      ? <Redirect to="/search" />
+                      : <Home handleSearch={setQuery}/>
+                  }
+                </Route>
+              </Switch>
             </div>
           </Col>
         </Content>
