@@ -5,9 +5,3 @@
   padding: 24px;
   background: #FFFFFF;
 }
-
-.ant-pagination-item,
-.ant-pagination-jump-prev,
-.ant-pagination-jump-next {
-  display: none;
-}

@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { List, Divider, Drawer, Input } from 'antd';
-import axios from 'axios';
+
+import API from '../api';
 
 import CharacterCard from '../components/CharacterCard.js';
 import CharacterDetails from '../components/CharacterDetails.js';
 
 const { Search } = Input;
 
-const CHARACTER_API = 'https://rickandmortyapi.com/api/character'
 const PAGE_SIZE = 5;
 
 function Results() {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
-  const [info, setInfo] = useState({});
   const [results, setResults] = useState([]);
   const [character, setCharacter] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [apiPage, setApiPage] = useState(1);
-
 
   const showDetails = (character) => {
     setCharacter(character)
@@ -33,30 +30,35 @@ function Results() {
   const onSearch = (value) => {
     setQuery(value);
     setCurrentPage(1);
-    setApiPage(1);
-    setResults([]);
-  };
-
-  const handlePagination = (page) => {
-    if (page > currentPage) {
-      setApiPage(Math.ceil(page/4));
-    }
-    setCurrentPage(page);
   };
 
   useEffect(() => {
-    axios.get(CHARACTER_API, {
-      params: {
-        name: query,
-        page: apiPage
-      }})
-      .then((response) => {
-        setResults((results) => [...results, ...response.data.results]);
-        setInfo(response.data.info);
-      })
-      .catch((error) => alert(error))
-      .finally(() => setLoading(false));
-  }, [query, apiPage]);
+    const getResults = async (url, query) => {
+      const response = await API.get(url, {
+        params: {
+          name: query
+        }
+      });
+
+      const data = response.data;
+
+      if (data.info.next) {
+        return data.results.concat(await getResults(data.info.next));
+      }
+
+      return data.results;
+    }
+
+    (async () => {
+      setLoading(true);
+      try {
+        setResults(await getResults('character', query));
+      } catch (e) {
+        setResults([]);
+      }
+      setLoading(false);
+    })();
+  }, [query]);
 
   return(
     <div>
@@ -86,8 +88,7 @@ function Results() {
         grid={{ gutter: 16, column: 5 }}
         loading={loading}
         pagination={{
-          onChange: (page) => handlePagination(page),
-          total: info.count,
+          onChange: (page) => setCurrentPage(page),
           pageSize: PAGE_SIZE,
           showSizeChanger: false,
           current: currentPage

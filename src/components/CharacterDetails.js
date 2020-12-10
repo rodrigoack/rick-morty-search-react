@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Divider, Image, Button, List } from 'antd';
-import axios from 'axios';
-
+import API from '../api';
 
 function CharacterDetails(props) {
   const [results, setResults] = useState([]);
@@ -22,7 +21,7 @@ function CharacterDetails(props) {
   useEffect(() => {
     setLoading(true);
 
-    Promise.all(episode.map((url) => axios.get(url)))
+    Promise.all(episode.map((url) => API.get(url)))
       .then((responses) => {
         setResults(responses.map((response) => ({...response.data})));
       })
@@ -40,7 +39,7 @@ function CharacterDetails(props) {
       <Divider/>
       <b>Status:</b> {status} <br/>
       <b>Species:</b> {species} <br/>
-      <b>Type:</b> {type || "Unknown"} <br/>
+      <b>Type:</b> {type || "unknown"} <br/>
       <b>Gender:</b> {gender} <br/>
       <b>Origin:</b> {origin.name} <br/>
       <b>Location:</b> {location.name} <br/>
